@@ -54,3 +54,16 @@ for i = 1:3
     plot(fx, 10*log10(abs(R).^2)), grid on; %plot so we can compare it to the original chirp
     xlabel('f (Hz)'), ylabel('|X|^2 (dB)'), title('Chirp through mic spectrum');
 end
+
+%% mic response against a pure tone
+
+signal_cosine = cos(2*pi*1000*tn);
+signal_cosine = signal_cosine.*env;
+rec = audiorecorder(fs, 16, 1);
+player = audioplayer(signal_cosine, fs); %plays the chirp
+record(rec);            
+playblocking(player);   
+pause(0.5); %waits for half a second before stopping...           
+stop(rec);
+rx = getaudiodata(rec);
+audiowrite("p0_pure_tone_rx.wav", rx, fs);
