@@ -2,13 +2,13 @@ fs = 48000; %audio sample frequency
 N = 4096;
 T = 3; %time of recording
 
-%% Recording and getting the data
+%% Recording and getting the data, here we want to measure the "silence" of our system
 rec = audiorecorder(fs, 16, 1);
 disp('Recording...')
 recordblocking(rec, T);
 disp('Done')
 audio_noise = getaudiodata(rec);
-audio_noise = audio_noise(round(0.2*fs)+1:end); % take the first 0.2 seconds out of the recording ()
+audio_noise = audio_noise(round(0.2*fs)+1:end); % take the first 0.2 seconds out of the recording (may have unwanted noise in it)
 [pw, f] = pwelch(audio_noise, N, N/2, N, fs); %calculate power spectral density 
 
 %% Plotting

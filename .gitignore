@@ -38,3 +38,11 @@ codegen/
 # SimBiology backup files
 *.sbproj.backup
 *.sbproj.bak
+
+# Images: only the ones inside img/ are uploaded
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+!/img/**
