@@ -57,7 +57,7 @@ end
 
 %% mic response against a pure tone
 
-signal_cosine = cos(2*pi*1000*tn);
+signal_cosine = cos(2*pi*10000*tn);
 signal_cosine = signal_cosine.*env;
 rec = audiorecorder(fs, 16, 1);
 player = audioplayer(signal_cosine, fs); %plays the chirp
@@ -67,3 +67,17 @@ pause(0.5); %waits for half a second before stopping...
 stop(rec);
 rx = getaudiodata(rec);
 audiowrite("p0_pure_tone_rx.wav", rx, fs);
+
+%% plot the pure tone test frequency response
+
+pure = fftshift(fft(audioread("p0_pure_tone_rx.wav")));
+fpure = (-length(pure)/2 : length(pure)/2-1).* fs/length(pure); % -24 kHz ... +24 kHz
+plot(fpure, 10*log10(abs(pure).^2));
+xlabel('f (Hz)'), ylabel('|PURE|^2 (dB)'), title('Pure tone test spectrum');
+
+%% Spectogram
+% plot spectogram, to see the 
+% evolution in frequency of the chirp over time (expecting a diagonal line)
+figure;
+spectrogram(audioread("p0_chirp_rx_1.wav"), 4096, 2048, 4096, fs, 'yaxis'); 
+title('Chirp: spectrogram');
